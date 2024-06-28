@@ -17,7 +17,7 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        background-image: url("https://wallpapercave.com/wp/wp2356258.jpg");
+        background-image: url("/images/GymAReport.jpg");
     	background-repeat: no-repeat;
   		background-attachment: fixed; 
   		background-size: 100% 100%;

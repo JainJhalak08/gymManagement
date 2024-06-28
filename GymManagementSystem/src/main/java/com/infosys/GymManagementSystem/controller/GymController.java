@@ -6,14 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.infosys.GymManagementSystem.bean.GymItem;
 import com.infosys.GymManagementSystem.bean.Slot;
+import com.infosys.GymManagementSystem.bean.SlotItem;
+import com.infosys.GymManagementSystem.bean.SlotItemEmbed;
 import com.infosys.GymManagementSystem.diao.GymItemDiao;
 import com.infosys.GymManagementSystem.diao.SlotDiao;
+import com.infosys.GymManagementSystem.diao.SlotItemDiao;
 
 @Controller
 public class GymController {
@@ -21,6 +25,8 @@ public class GymController {
 	private GymItemDiao gymItemDao;
 	@Autowired
 	private SlotDiao slotDao;
+	@Autowired
+	private SlotItemDiao slotItemDao;
 	@GetMapping("/index")
 	public ModelAndView showIndex() {
 		return new ModelAndView("index");
@@ -62,10 +68,17 @@ public class GymController {
 		
 	}
 	@PostMapping("/slot")
-	public ModelAndView saveSlot(@ModelAttribute("slotRecord") Slot slotItem) {
-		slotDao.saveNewSlot(slotItem);
+	public ModelAndView saveSlot(@ModelAttribute("slotRecord") Slot slot) {
+		slotDao.saveNewSlot(slot);
+		List<GymItem> itemList=gymItemDao.displayAllItems();
+		for(GymItem item:itemList) {
+			SlotItemEmbed embed = new SlotItemEmbed(slot.getSlotId(),item.getItemId());
+			SlotItem slotItem=new SlotItem(embed);
+			slotItemDao.save(slotItem);
+		} 
 		return new ModelAndView("index");
 	}
+	
 	
 	@GetMapping("/slots")
 	public ModelAndView showSlotReportPage() {
@@ -74,6 +87,19 @@ public class GymController {
 		mv.addObject("slotList",slotList);
 		return mv;
 	}
+	
+	
+	@GetMapping("/slot-show/{id}")
+	public ModelAndView showSlotEnquirePage(@PathVariable Long id) {
+		Slot slot = slotDao.findSlotById(id);
+		List<GymItem> itemList=gymItemDao.displayAllItems();
+		ModelAndView mv=new ModelAndView("SlotBookingPage");
+		mv.addObject("slot",slot);
+		mv.addObject("itemList",itemList);
+		itemList.forEach(item->System.out.println(item));
+		return mv;
+	}
+
 	
 }
 

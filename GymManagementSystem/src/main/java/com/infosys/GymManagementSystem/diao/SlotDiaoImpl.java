@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.infosys.GymManagementSystem.bean.Slot;
 @Repository
 @Service
-public class SlotDiaolmpl implements SlotDiao {
+public class SlotDiaoImpl implements SlotDiao {
 
 
 	@Autowired
@@ -41,7 +41,6 @@ public class SlotDiaolmpl implements SlotDiao {
 		return val;
 		
 	}
-	
 	
 	
 	
