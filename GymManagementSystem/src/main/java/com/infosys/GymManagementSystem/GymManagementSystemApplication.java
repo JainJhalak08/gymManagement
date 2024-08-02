@@ -11,3 +11,6 @@ public class GymManagementSystemApplication {
 	}
 
 }
+
+// jhalak ---> 1234 ---> Admin
+// jonny ---> Rose@12 ---> customer

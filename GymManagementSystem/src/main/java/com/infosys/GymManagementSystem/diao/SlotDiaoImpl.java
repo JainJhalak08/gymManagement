@@ -11,6 +11,11 @@ import com.infosys.GymManagementSystem.bean.Slot;
 @Service
 public class SlotDiaoImpl implements SlotDiao {
 
+	@Autowired
+	private GymBookDiao gymBookDao;
+
+	@Autowired
+	private SlotItemDiao slotItemDao;
 
 	@Autowired
 	private SlotRepository repository;
@@ -41,7 +46,18 @@ public class SlotDiaoImpl implements SlotDiao {
 		return val;
 		
 	}
+	@Override
+	public void deleteById(Long id) {
+		// TODO Auto-generated method stub
+		 gymBookDao.deleteBookingsBySlotId(id);
+		    slotItemDao.deleteSlotItemsBySlotId(id);
+		repository.deleteById(id);
+		
+	}
 	
-	
+	@Override
+	public void updateSlot(Slot slot) {
+	    repository.save(slot);
+	}	
 	
 }
